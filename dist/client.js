@@ -14,8 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClickSign = void 0;
 const querystring_1 = __importDefault(require("querystring"));
-const createClientBody_1 = require("./createClientBody");
-const keyValidation_1 = require("./keyValidation");
 class ClickSign {
     constructor(client, key) {
         this.errorResponse = (response) => {
@@ -49,41 +47,3 @@ class ClickSign {
     }
 }
 exports.ClickSign = ClickSign;
-/*
-const body = {
-  document: {
-    path: '/tegjhvhjvjh.pdf',
-    content_base64: docBase64,
-    deadline_at: '2023-05-07T14:20:49-05:00',
-    auto_close: true,
-    locale: 'pt-BR',
-    sequence_enabled: false,
-    block_after_refusal: true,
-  }
-}
-*/
-const body = {
-    signer: {
-        email: "Ncaio037@gmail.com",
-        phone_number: "11999629173",
-        auths: [
-            "email"
-        ],
-        name: "Caio Neves",
-        documentation: "48858045823",
-        birthday: "2003-04-05",
-        has_documentation: true,
-        selfie_enabled: false,
-        handwritten_enabled: false,
-        official_document_enabled: false,
-        liveness_enabled: false,
-        facial_biometrics_enabled: false
-    }
-};
-new ClickSign((0, createClientBody_1.clientBody)(), (0, keyValidation_1.validationKeyEnviroment)()).createSigner(body)
-    .then((resp) => {
-    console.log(resp);
-})
-    .then((err) => {
-    console.log(err);
-});

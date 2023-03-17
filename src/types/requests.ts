@@ -1,4 +1,4 @@
-export interface createDocument {
+export interface createDocumentBody {
     document: {
         path: string
         content_base64: string

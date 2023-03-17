@@ -9,7 +9,7 @@ import { validationKeyEnviroment } from "./keyValidation";
 export interface ClickSignClient {
     client: Axios
     key: string
-    createDocument: (request: Request.createDocument,) => Promise<Response.createDocument>
+    createDocument: (request: Request.createDocumentBody,) => Promise<Response.createDocument>
     createSigner: (request: Request.createSigner,) => Promise<Response.createSigner>
 }
 
@@ -32,7 +32,7 @@ export class ClickSign implements ClickSignClient {
       }
     }
 
-    async createDocument(request: Request.createDocument) {
+    async createDocument(request: Request.createDocumentBody) {
         const { client, key } = this
         const config = qs.stringify({access_token: key})
 
