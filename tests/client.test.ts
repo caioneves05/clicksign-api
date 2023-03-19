@@ -2,7 +2,7 @@ import { ClickSign } from '../src/client'
 import { clientBody } from '../src/createClientBody'
 import { validationKeyEnviroment } from '../src/keyValidation'
 
-import { createDocumentBody } from '../src/types/requests'
+import { createDocumentBody, createSigner } from '../src/types/requests'
 import { docBase64 } from '../src/docBase64'
 
 describe('Client', () => {
@@ -36,6 +36,38 @@ describe('Client', () => {
                 document: expect.objectContaining({
                     path: body.document.path,
                     locale: 'pt-BR'
+                })
+            })
+        )
+    })
+
+    it('should create a new signer', async () => {
+        const body = {
+            signer: {
+                email: "Ncaio037@gmail.com",
+                phone_number: "11999629173",
+                auths: [
+                  "email"
+                ],
+                name: "Caio Neves",
+                documentation: "48858045823",
+                birthday: "2003-04-05",
+                has_documentation: true,
+                selfie_enabled: false,
+                handwritten_enabled: false,
+                official_document_enabled: false,
+                liveness_enabled: false,
+                facial_biometrics_enabled: false
+              }
+        } as createSigner
+
+        const newSginer = await client.createSigner(body)
+
+        expect(newSginer).toEqual(
+            expect.objectContaining({
+                signer: expect.objectContaining({
+                    email: body.signer.email,
+                    auths: expect.arrayContaining(body.signer.auths)
                 })
             })
         )
