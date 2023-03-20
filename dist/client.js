@@ -14,6 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClickSign = void 0;
 const querystring_1 = __importDefault(require("querystring"));
+const types_1 = require("./types");
+const createClientBody_1 = require("./createClientBody");
+const keyValidation_1 = require("./keyValidation");
 class ClickSign {
     constructor(client, key) {
         this.errorResponse = (response) => {
@@ -45,5 +48,19 @@ class ClickSign {
             return yield result.data;
         });
     }
+    AddSignToDocument(request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { client, key } = this;
+            const config = querystring_1.default.stringify({ access_token: key });
+            const result = yield client.post(`/api/v1/lists?${config}`, request);
+            return yield result.data;
+        });
+    }
 }
 exports.ClickSign = ClickSign;
+const result = new ClickSign((0, createClientBody_1.clientBody)(), (0, keyValidation_1.validationKeyEnviroment)()).createDocument(types_1.bodyMethods.bodyCreateDocument);
+result.then((result) => {
+    console.log(result); // faz algo com o resultado
+}).catch((error) => {
+    console.error(error); // lida com erros
+});

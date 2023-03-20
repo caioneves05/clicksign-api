@@ -41,3 +41,18 @@ export interface createSigner {
         updated_at: string
     }
 }
+
+export interface AddSignToDocument {
+    list: {
+        key: string,
+        request_signature_key: string,
+        document_key: string,
+        signer_key: string,
+        sign_as: string,
+        refusable: true,
+        created_at: string,
+        updated_at: string,
+        url: string,
+        message: string
+      }
+}

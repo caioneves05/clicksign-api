@@ -2,8 +2,9 @@ import { ClickSign } from '../src/client'
 import { clientBody } from '../src/createClientBody'
 import { validationKeyEnviroment } from '../src/keyValidation'
 
-import { createDocumentBody, createSigner } from '../src/types/requests'
+import { createDocumentBody, createSigner, AddSignTheDocument } from '../src/types/requests'
 import { docBase64 } from '../src/docBase64'
+import { bodyCreateDocument, bodyCreateSigner } from '../src/types/bodyMethods'
 
 describe('Client', () => {
     let client: ClickSign
@@ -71,5 +72,36 @@ describe('Client', () => {
                 })
             })
         )
+    })
+
+    it('should add a signer to the document.', async () => {
+        const createDocument = await client.createDocument(bodyCreateDocument)
+        const createSigner = await client.createSigner(bodyCreateSigner)
+
+        const documentKey = createDocument.document.key
+        const signerKey = createSigner.signer.key
+
+        const body = {
+            list: {
+                document_key: documentKey,
+                signer_key: signerKey,
+                sign_as: 'sign',
+                refusable: true,
+                message: 'Prezado Caio,Por favor assine o documento.'
+              } 
+        } as AddSignTheDocument
+
+        const result = await client.AddSignToDocument(body)
+
+        expect(result).toEqual(
+            expect.objectContaining({
+                list: expect.objectContaining({
+                    sign_as: body.list.sign_as,
+                    refusable: body.list.refusable,
+                    message: body.list.message,
+                })
+            })
+        )
+
     })
 })

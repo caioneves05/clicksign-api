@@ -26,3 +26,14 @@ export interface createSigner {
         facial_biometrics_enabled: boolean
     }
 }
+
+export interface AddSignTheDocument {
+    list: {
+        document_key: string,
+        signer_key: string,
+        sign_as: 'sign',
+        refusable: true,
+        group: 1,
+        message: string
+      }
+}

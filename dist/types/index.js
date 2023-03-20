@@ -23,6 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Response = exports.Request = void 0;
+exports.bodyMethods = exports.Response = exports.Request = void 0;
 exports.Request = __importStar(require("./requests"));
 exports.Response = __importStar(require("./response"));
+exports.bodyMethods = __importStar(require("./bodyMethods"));
