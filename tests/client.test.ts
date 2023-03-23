@@ -4,7 +4,8 @@ import { validationKeyEnviroment } from '../src/keyValidation'
 
 import { createDocumentBody, createSigner, addSignTheDocument } from '../src/types/requests'
 import { docBase64 } from '../src/docBase64'
-import { bodyCreateDocument, bodyCreateSigner } from '../src/types/bodyMethods'
+import { bodyCreateDocument, bodyCreateSigner, bodyNotifySigner } from '../src/types/bodyMethods'
+import { HttpStatusCode } from 'axios'
 
 describe('Client', () => {
     let client: ClickSign
@@ -16,7 +17,7 @@ describe('Client', () => {
 
     it('should crete a new document', async () => {
         const deadline_at = new Date()
-        deadline_at.setDate(deadline_at.getDate() + 1)
+        deadline_at.setDate(deadline_at.getDate() + 20)
 
         const body = {
             document: {
@@ -48,7 +49,7 @@ describe('Client', () => {
                 email: "Ncaio037@gmail.com",
                 phone_number: "11999629173",
                 auths: [
-                  "email"
+                  "sms"
                 ],
                 name: "Caio Neves",
                 documentation: "48858045823",
@@ -105,5 +106,11 @@ describe('Client', () => {
             })
         )
 
+    })
+
+    it('shold notify the signer to sign the document via sms', async () => {
+        const notification = await client.notifyingSignatorySMS(bodyNotifySigner)
+
+        expect(notification).toBe(HttpStatusCode.Accepted)
     })
 })

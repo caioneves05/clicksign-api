@@ -39,7 +39,5 @@ export interface addSignTheDocument {
 }
 
 export interface notifying {
-    request_signature_key: string,
-    message: string,
-    url: string
+    request_signature_key: string
 }

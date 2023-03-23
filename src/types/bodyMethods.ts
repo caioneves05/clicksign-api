@@ -18,7 +18,7 @@ export const bodyCreateDocument = {
       email: "Ncaio037@gmail.com",
       phone_number: "11999629173",
       auths: [
-        "email"
+        "sms"
       ],
       name: "Caio Neves",
       documentation: "48858045823",
@@ -31,3 +31,8 @@ export const bodyCreateDocument = {
       facial_biometrics_enabled: false
     }
   }
+
+  export const bodyNotifySigner = {
+    request_signature_key: '6e1660f0-908d-4f04-befa-2cff0c4359d2'
+  }
+  
