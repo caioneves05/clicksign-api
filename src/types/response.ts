@@ -56,3 +56,5 @@ export interface AddSignToDocument {
         message: string
       }
 }
+
+export interface notification {}

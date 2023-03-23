@@ -27,7 +27,7 @@ export interface createSigner {
     }
 }
 
-export interface AddSignTheDocument {
+export interface addSignTheDocument {
     list: {
         document_key: string,
         signer_key: string,
@@ -36,4 +36,10 @@ export interface AddSignTheDocument {
         group: 1,
         message: string
       }
+}
+
+export interface notifying {
+    request_signature_key: string,
+    message: string,
+    url: string
 }

@@ -2,7 +2,7 @@ import { ClickSign } from '../src/client'
 import { clientBody } from '../src/createClientBody'
 import { validationKeyEnviroment } from '../src/keyValidation'
 
-import { createDocumentBody, createSigner, AddSignTheDocument } from '../src/types/requests'
+import { createDocumentBody, createSigner, addSignTheDocument } from '../src/types/requests'
 import { docBase64 } from '../src/docBase64'
 import { bodyCreateDocument, bodyCreateSigner } from '../src/types/bodyMethods'
 
@@ -63,6 +63,8 @@ describe('Client', () => {
         } as createSigner
 
         const newSginer = await client.createSigner(body)
+        const keyUser = newSginer.signer.key
+        console.log(keyUser)
 
         expect(newSginer).toEqual(
             expect.objectContaining({
@@ -89,7 +91,7 @@ describe('Client', () => {
                 refusable: true,
                 message: 'Prezado Caio,Por favor assine o documento.'
               } 
-        } as AddSignTheDocument
+        } as addSignTheDocument
 
         const result = await client.AddSignToDocument(body)
 
