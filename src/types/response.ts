@@ -1,3 +1,5 @@
+import { AxiosError } from "axios"
+
 export interface createDocument {
     document: {
         key: string

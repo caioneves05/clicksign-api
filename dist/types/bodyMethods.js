@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bodyCreateSigner = exports.bodyCreateDocument = void 0;
+exports.bodyNotifySigner = exports.bodyCreateSigner = exports.bodyCreateDocument = void 0;
 const docBase64_1 = require("../docBase64");
 exports.bodyCreateDocument = {
     document: {
@@ -18,7 +18,7 @@ exports.bodyCreateSigner = {
         email: "Ncaio037@gmail.com",
         phone_number: "11999629173",
         auths: [
-            "email"
+            "sms"
         ],
         name: "Caio Neves",
         documentation: "48858045823",
@@ -30,4 +30,7 @@ exports.bodyCreateSigner = {
         liveness_enabled: false,
         facial_biometrics_enabled: false
     }
+};
+exports.bodyNotifySigner = {
+    request_signature_key: '577f57a0-4c5c-459f-ace4-416621d5ba5a'
 };

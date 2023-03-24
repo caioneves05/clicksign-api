@@ -109,8 +109,14 @@ describe('Client', () => {
     })
 
     it('shold notify the signer to sign the document via sms', async () => {
-        const notification = await client.notifyingSignatorySMS(bodyNotifySigner)
+        const createNewSigner = await client.createSigner(bodyCreateSigner)
+        const key = createNewSigner.signer.key
+        const body = {
+            request_signature_key: key,
+        }
 
-        expect(notification).toBe(HttpStatusCode.Accepted)
+        const notification = await client.notifyingSignatorySMS(body)
+
+        expect(notification.status).toBe(202)
     })
 })

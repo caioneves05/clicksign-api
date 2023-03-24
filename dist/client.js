@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClickSign = void 0;
 const querystring_1 = __importDefault(require("querystring"));
-const types_1 = require("./types");
 const createClientBody_1 = require("./createClientBody");
 const keyValidation_1 = require("./keyValidation");
 class ClickSign {
@@ -56,11 +55,29 @@ class ClickSign {
             return yield result.data;
         });
     }
+    notifyingSignatorySMS(request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { client, key } = this;
+            const config = querystring_1.default.stringify({ access_token: key });
+            const notification = yield client.post(`/api/v1/notify_by_sms?${config}`, request);
+            return yield notification.data;
+        });
+    }
 }
 exports.ClickSign = ClickSign;
-const result = new ClickSign((0, createClientBody_1.clientBody)(), (0, keyValidation_1.validationKeyEnviroment)()).createDocument(types_1.bodyMethods.bodyCreateDocument);
-result.then((result) => {
-    console.log(result); // faz algo com o resultado
-}).catch((error) => {
-    console.error(error); // lida com erros
-});
+const body = {
+    request_signature_key: '577f57a0-4c5c-459f-ace4-416621d5ba5a'
+};
+function execute() {
+    new ClickSign((0, createClientBody_1.clientBody)(), (0, keyValidation_1.validationKeyEnviroment)())
+        .notifyingSignatorySMS(body)
+        .then((result) => {
+        console.log('Resultado da notificação SMS:', result);
+        // Aqui dentro você pode trabalhar com o resultado retornado pela promise
+    })
+        .catch((error) => {
+        console.error('Ocorreu um erro:', error);
+        // Aqui dentro você pode tratar o erro caso a promise seja rejeitada
+    });
+}
+execute();

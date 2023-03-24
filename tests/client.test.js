@@ -22,7 +22,7 @@ describe('Client', () => {
     jest.setTimeout(50000);
     it('should crete a new document', () => __awaiter(void 0, void 0, void 0, function* () {
         const deadline_at = new Date();
-        deadline_at.setDate(deadline_at.getDate() + 1);
+        deadline_at.setDate(deadline_at.getDate() + 20);
         const body = {
             document: {
                 path: '/testeDocument.pdf',
@@ -48,7 +48,7 @@ describe('Client', () => {
                 email: "Ncaio037@gmail.com",
                 phone_number: "11999629173",
                 auths: [
-                    "email"
+                    "sms"
                 ],
                 name: "Caio Neves",
                 documentation: "48858045823",
@@ -62,6 +62,8 @@ describe('Client', () => {
             }
         };
         const newSginer = yield client.createSigner(body);
+        const keyUser = newSginer.signer.key;
+        console.log(keyUser);
         expect(newSginer).toEqual(expect.objectContaining({
             signer: expect.objectContaining({
                 email: body.signer.email,
@@ -71,5 +73,34 @@ describe('Client', () => {
     }));
     it('should add a signer to the document.', () => __awaiter(void 0, void 0, void 0, function* () {
         const createDocument = yield client.createDocument(bodyMethods_1.bodyCreateDocument);
+        const createSigner = yield client.createSigner(bodyMethods_1.bodyCreateSigner);
+        const documentKey = createDocument.document.key;
+        const signerKey = createSigner.signer.key;
+        const body = {
+            list: {
+                document_key: documentKey,
+                signer_key: signerKey,
+                sign_as: 'sign',
+                refusable: true,
+                message: 'Prezado Caio,Por favor assine o documento.'
+            }
+        };
+        const result = yield client.AddSignToDocument(body);
+        expect(result).toEqual(expect.objectContaining({
+            list: expect.objectContaining({
+                sign_as: body.list.sign_as,
+                refusable: body.list.refusable,
+                message: body.list.message,
+            })
+        }));
+    }));
+    it('shold notify the signer to sign the document via sms', () => __awaiter(void 0, void 0, void 0, function* () {
+        const createNewSigner = yield client.createSigner(bodyMethods_1.bodyCreateSigner);
+        const key = createNewSigner.signer.key;
+        const body = {
+            request_signature_key: key,
+        };
+        const notification = yield client.notifyingSignatorySMS(body);
+        expect(notification.status).toBe(202);
     }));
 });
