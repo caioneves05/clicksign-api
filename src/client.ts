@@ -67,12 +67,11 @@ const body = {
     request_signature_key: 'd51c15c4-9477-45e7-bd9f-66c16a182f58'
 }
 
-function execute() {
-    new ClickSign(clientBody(), validationKeyEnviroment())
+async function execute() {
+     new ClickSign(clientBody(), validationKeyEnviroment())
       .notifyingSignatorySMS(body)
       .then((result) => {
         console.log('Resultado da notificação SMS:',result);
-        // Aqui dentro você pode trabalhar com o resultado retornado pela promise
       })
       .catch(error => {
         if (error.response && error.response.status === 200 && error.response.data.length === 0) {
