@@ -117,6 +117,6 @@ describe('Client', () => {
 
         const notification = await client.notifyingSignatorySMS(body)
 
-        expect(notification.status).toBe(202)
+        expect(clientBody).toBe(202)
     })
 })

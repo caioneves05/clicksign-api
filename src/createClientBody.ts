@@ -12,7 +12,7 @@ export const clientBody = () => new Axios({
         try{
             return JSON.parse(data)
         } catch(err){
-            return err
+            console.log(data)
         }
     }
 })

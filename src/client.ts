@@ -58,7 +58,7 @@ export class ClickSign implements ClickSignClient {
       const config = qs.stringify({access_token: key})
 
       const notification = await client.post(`/api/v1/notify_by_sms?${config}`, request)
-      const data = await notification.data
+      const data = await notification.status
       return data
     }
 }
@@ -68,21 +68,13 @@ const body = {
 }
 
 async function execute() {
-     new ClickSign(clientBody(), validationKeyEnviroment())
-      .notifyingSignatorySMS(body)
+     new ClickSign(clientBody(), validationKeyEnviroment()).notifyingSignatorySMS(body)
       .then((result) => {
-        console.log('Resultado da notificação SMS:',result);
+        console.log('Resultado da notificação SMS:', result);
       })
-      .catch(error => {
-        if (error.response && error.response.status === 200 && error.response.data.length === 0) {
-          console.error('Resposta vazia do servidor');
-        } else if (error.response && error.response.data) {
-          console.error(`Erro ao processar resposta do servidor: ${error.response.data}`);
-        } else {
-          console.error(`Erro na solicitação: ${error.message}`);
-        }
-      });
-    
+      .catch((error) => {
+        throw error
+      })
 }
 
 execute()
