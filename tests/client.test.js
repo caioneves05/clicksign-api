@@ -98,7 +98,7 @@ describe('Client', () => {
         const createNewSigner = yield client.createSigner(bodyMethods_1.bodyCreateSigner);
         const key = createNewSigner.signer.key;
         const body = {
-            request_signature_key: key,
+            request_signature_key: 'd51c15c4-9477-45e7-bd9f-66c16a182f58',
         };
         const notification = yield client.notifyingSignatorySMS(body);
         expect(notification.status).toBe(202);

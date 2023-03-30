@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 export const validationKeyEnviroment = () => {
-    const token = '2febcb09-c5df-46fd-875d-8818eb4ed1a6'
+    const token = process.env.CLICKSIGN_TOKEN
     if(token) {
         return token
     }else{

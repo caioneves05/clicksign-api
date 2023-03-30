@@ -60,24 +60,33 @@ class ClickSign {
             const { client, key } = this;
             const config = querystring_1.default.stringify({ access_token: key });
             const notification = yield client.post(`/api/v1/notify_by_sms?${config}`, request);
-            return yield notification.data;
+            const data = yield notification.data;
+            return data;
         });
     }
 }
 exports.ClickSign = ClickSign;
 const body = {
-    request_signature_key: '577f57a0-4c5c-459f-ace4-416621d5ba5a'
+    request_signature_key: 'd51c15c4-9477-45e7-bd9f-66c16a182f58'
 };
 function execute() {
-    new ClickSign((0, createClientBody_1.clientBody)(), (0, keyValidation_1.validationKeyEnviroment)())
-        .notifyingSignatorySMS(body)
-        .then((result) => {
-        console.log('Resultado da notificação SMS:', result);
-        // Aqui dentro você pode trabalhar com o resultado retornado pela promise
-    })
-        .catch((error) => {
-        console.error('Ocorreu um erro:', error);
-        // Aqui dentro você pode tratar o erro caso a promise seja rejeitada
+    return __awaiter(this, void 0, void 0, function* () {
+        new ClickSign((0, createClientBody_1.clientBody)(), (0, keyValidation_1.validationKeyEnviroment)())
+            .notifyingSignatorySMS(body)
+            .then((result) => {
+            console.log('Resultado da notificação SMS:', result);
+        })
+            .catch(error => {
+            if (error.response && error.response.status === 200 && error.response.data.length === 0) {
+                console.error('Resposta vazia do servidor');
+            }
+            else if (error.response && error.response.data) {
+                console.error(`Erro ao processar resposta do servidor: ${error.response.data}`);
+            }
+            else {
+                console.error(`Erro na solicitação: ${error.message}`);
+            }
+        });
     });
 }
 execute();
