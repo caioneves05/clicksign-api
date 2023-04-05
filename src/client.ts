@@ -46,7 +46,7 @@ export class ClickSign implements ClickSignClient {
       return await result.data
     }
 
-    async AddSignToDocument(request: Request.addSignTheDocument): Promise<Response.AddSignToDocument> {
+    async AddSignerToDocument(request: Request.addSignTheDocument): Promise<Response.AddSignToDocument> {
         const { client, key } = this
         const config = qs.stringify({access_token: key})
 
@@ -55,26 +55,55 @@ export class ClickSign implements ClickSignClient {
     }
     async notifyingSignatorySMS(request: Request.notifying): Promise<AxiosResponse> {
       const { client, key } = this
+      console.log(client, request)
       const config = qs.stringify({access_token: key})
-
       const notification = await client.post(`/api/v1/notify_by_sms?${config}`, request)
-      const data = await notification.status
+      const data = await notification
       return data
     }
 }
 
+async function signatureKey() {
+  const key = await new ClickSign(clientBody(), validationKeyEnviroment()).createSigner(bodyMethods.bodyCreateSigner)
+  .then((resp) => resp.signer.key)
+  .catch((err) => err)
+}
+
+async function createDocument() {
+  const key = await new ClickSign(clientBody(), validationKeyEnviroment()).createDocument(bodyMethods.bodyCreateDocument)
+  .then((resp) => resp.document.key)
+  .catch((err) => err)
+}
+
+const AddSignerToDocumentBody = {
+  list: {
+      document_key: createDocument(),
+      signer_key: signatureKey(),
+      sign_as: 'sign',
+      refusable: true,
+      message: 'Prezado Caio,Por favor assine o documento.'
+    } 
+}
+
+async function addSignerAtDocument() {
+  const result = await new ClickSign(clientBody(), validationKeyEnviroment()).AddSignerToDocument(AddSignerToDocumentBody)
+  .then((resp) => resp)
+  .catch((err) => err)
+}
+//depois arrumar a tipagem de notify e addSignTheDocument.
+
 const body = {
-    request_signature_key: 'd51c15c4-9477-45e7-bd9f-66c16a182f58'
+    request_signature_key: signatureKey(),
+    message: 'Assine esse documento.'
 }
 
 async function execute() {
      new ClickSign(clientBody(), validationKeyEnviroment()).notifyingSignatorySMS(body)
       .then((result) => {
-        console.log('Resultado da notificação SMS:', result);
+        console.log('Resultado da notificação:', result.status);
       })
       .catch((error) => {
-        throw error
+        return error
       })
 }
 
-execute()

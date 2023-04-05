@@ -13,7 +13,7 @@ describe('Client', () => {
         client = new ClickSign(clientBody(), validationKeyEnviroment())
     })
 
-    jest.setTimeout(50000)
+    jest.setTimeout(80000)
 
     it('should crete a new document', async () => {
         const deadline_at = new Date()
@@ -49,7 +49,7 @@ describe('Client', () => {
                 email: "Ncaio037@gmail.com",
                 phone_number: "11999629173",
                 auths: [
-                  "sms"
+                  "email"
                 ],
                 name: "Caio Neves",
                 documentation: "48858045823",
@@ -65,7 +65,6 @@ describe('Client', () => {
 
         const newSginer = await client.createSigner(body)
         const keyUser = newSginer.signer.key
-        console.log(keyUser)
 
         expect(newSginer).toEqual(
             expect.objectContaining({
@@ -83,7 +82,6 @@ describe('Client', () => {
 
         const documentKey = createDocument.document.key
         const signerKey = createSigner.signer.key
-
         const body = {
             list: {
                 document_key: documentKey,
@@ -94,7 +92,7 @@ describe('Client', () => {
               } 
         } as addSignTheDocument
 
-        const result = await client.AddSignToDocument(body)
+        const result = await client.AddSignerToDocument(body)
 
         expect(result).toEqual(
             expect.objectContaining({
@@ -110,13 +108,23 @@ describe('Client', () => {
 
     it('shold notify the signer to sign the document via sms', async () => {
         const createNewSigner = await client.createSigner(bodyCreateSigner)
-        const key = createNewSigner.signer.key
+        const key = await createNewSigner.signer.key
+        console.log(key)
         const body = {
-            request_signature_key: 'd51c15c4-9477-45e7-bd9f-66c16a182f58',
+            request_signature_key: key,
+            message: 'Assine esse documento.',
+            url: 'https://developers.clicksign.com/docs/solicitar-assinatura-por-email'
+        }
+        if(!body || body === undefined) {
+            throw new Error('Body is a Error!')
+        }
+
+        if(!body.request_signature_key || body.request_signature_key === undefined) {
+            throw new Error('Signature Key is not defined!')
         }
 
         const notification = await client.notifyingSignatorySMS(body)
 
-        expect(clientBody).toBe(202)
+        expect(notification.status).toBe(202)
     })
 })

@@ -18,7 +18,7 @@ export const bodyCreateDocument = {
       email: "Ncaio037@gmail.com",
       phone_number: "11999629173",
       auths: [
-        "sms"
+        "email"
       ],
       name: "Caio Neves",
       documentation: "48858045823",
