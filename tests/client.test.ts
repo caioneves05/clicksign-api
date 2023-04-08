@@ -93,6 +93,7 @@ describe('Client', () => {
         } as addSignTheDocument
 
         const result = await client.AddSignerToDocument(body)
+        console.log(result.list.request_signature_key)
 
         expect(result).toEqual(
             expect.objectContaining({
@@ -107,13 +108,30 @@ describe('Client', () => {
     })
 
     it('shold notify the signer to sign the document via sms', async () => {
-        const createNewSigner = await client.createSigner(bodyCreateSigner)
-        const key = await createNewSigner.signer.key
-        console.log(key)
+        //Fluxo para adicionar o signatário ao documento
+        const createDocument = await client.createDocument(bodyCreateDocument)
+        const createSigner = await client.createSigner(bodyCreateSigner)
+
+        const documentKey = createDocument.document.key
+        const signerKey = createSigner.signer.key
+        const bodyAddSigner = {
+            list: {
+                document_key: documentKey,
+                signer_key: signerKey,
+                sign_as: 'sign',
+                refusable: true,
+                message: 'Prezado Caio,Por favor assine o documento.'
+              } 
+        } as addSignTheDocument
+
+        //Iniciando a notificação
+
+        const addToSignerToDocument = await client.AddSignerToDocument(bodyAddSigner)
+
+        const request_signature_key = await addToSignerToDocument.list.request_signature_key
         const body = {
-            request_signature_key: key,
+            request_signature_key: request_signature_key,
             message: 'Assine esse documento.',
-            url: 'https://developers.clicksign.com/docs/solicitar-assinatura-por-email'
         }
         if(!body || body === undefined) {
             throw new Error('Body is a Error!')
@@ -123,7 +141,7 @@ describe('Client', () => {
             throw new Error('Signature Key is not defined!')
         }
 
-        const notification = await client.notifyingSignatorySMS(body)
+        const notification = await client.notifyingSignatoryEmail(body)
 
         expect(notification.status).toBe(202)
     })

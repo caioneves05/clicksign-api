@@ -33,6 +33,7 @@ export const bodyCreateDocument = {
   }
 
   export const bodyNotifySigner = {
-    request_signature_key: '577f57a0-4c5c-459f-ace4-416621d5ba5a'
+    request_signature_key: '65669af6-e070-438e-aaa5-f88a1acfda95',
+    message: 'Assina esse documento'
   }
   

@@ -29,8 +29,8 @@ export interface createSigner {
 
 export interface addSignTheDocument {
     list: {
-        document_key: any,
-        signer_key: any,
+        document_key: string,
+        signer_key: string,
         sign_as: string,
         refusable: boolean,
         message: string
@@ -38,7 +38,7 @@ export interface addSignTheDocument {
 }
 
 export interface notifying {
-    request_signature_key: any,
+    request_signature_key: string,
     message: string
     url?: string
 }
